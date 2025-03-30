@@ -1,25 +1,17 @@
-
 import React from "react";
-import { Navbar } from "./Navbar";
-import { Footer } from "./Footer";
-import { BottomNav } from "./BottomNav";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Navigation } from "./Navigation";
 
 interface LayoutProps {
   children: React.ReactNode;
-  hideFooter?: boolean;
 }
 
-export function Layout({ children, hideFooter = false }: LayoutProps) {
-  const isMobile = useIsMobile();
-  
+export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
-      <main className="flex-grow pb-16 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
+      <main className="pb-16">
         {children}
       </main>
-      {isMobile ? <BottomNav /> : !hideFooter && <Footer />}
+      <Navigation />
     </div>
   );
 }

@@ -1,8 +1,7 @@
-
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.556b4ed4c084420da6d96732c8c8efa2',
+  appId: 'com.magicalghibli.app',
   appName: 'Ghibli Maker',
   webDir: 'dist',
   server: {
@@ -12,10 +11,8 @@ const config: CapacitorConfig = {
   },
   android: {
     backgroundColor: "#F6FBFD",
-    contentInset: "scrollable",
   },
   ios: {
-    contentInset: "scrollable",
     limitsNavigationsToAppBoundDomains: true,
   },
   plugins: {

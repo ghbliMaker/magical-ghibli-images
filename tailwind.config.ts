@@ -1,5 +1,5 @@
-
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -15,13 +15,17 @@ export default {
 			center: true,
 			padding: '2rem',
 			screens: {
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
 				'2xl': '1400px'
 			}
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Poppins', 'sans-serif'],
-				display: ['Sen', 'sans-serif'],
+				sans: ['Plus Jakarta Sans', 'sans-serif'],
+				display: ['Playfair Display', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -73,6 +77,11 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			boxShadow: {
+				'ghibli': '0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05)',
+				'ghibli-lg': '0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06)',
+				'magical': '0 0 20px rgba(78, 181, 218, 0.2), 0 0 40px rgba(78, 181, 218, 0.1)',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
@@ -83,15 +92,30 @@ export default {
 					to: { height: '0' },
 				},
 				float: {
-					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-10px)' },
+					'0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+					'50%': { transform: 'translateY(-10px) rotate(2deg)' },
 				},
 				fadeIn: {
-					from: { opacity: '0' },
-					to: { opacity: '1' },
+					from: { opacity: '0', transform: 'translateY(10px)' },
+					to: { opacity: '1', transform: 'translateY(0)' },
 				},
 				shimmer: {
 					'100%': { transform: 'translateX(100%)' },
+				},
+				sparkle: {
+					'0%': { transform: 'scale(0) rotate(0deg)' },
+					'50%': { transform: 'scale(1) rotate(180deg)' },
+					'100%': { transform: 'scale(0) rotate(360deg)' },
+				},
+				wave: {
+					'0%': { transform: 'rotate(0deg)' },
+					'25%': { transform: 'rotate(-10deg)' },
+					'75%': { transform: 'rotate(10deg)' },
+					'100%': { transform: 'rotate(0deg)' },
+				},
+				bounce: {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' },
 				},
 			},
 			animation: {
@@ -100,8 +124,15 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'fadeIn': 'fadeIn 0.5s ease-out',
 				'shimmer': 'shimmer 2s infinite',
+				'sparkle': 'sparkle 2s ease-in-out infinite',
+				'wave': 'wave 2s ease-in-out infinite',
+				'bounce': 'bounce 2s ease-in-out infinite',
+			},
+			backgroundImage: {
+				'ghibli-gradient': 'linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)), hsl(var(--accent)))',
+				'ghibli-radial': 'radial-gradient(circle at center, hsl(var(--background)), transparent)',
 			},
 		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [animate],
 } satisfies Config;
