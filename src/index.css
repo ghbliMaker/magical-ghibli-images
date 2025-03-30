@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -35,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 195 64% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -73,18 +73,41 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground font-sans;
-    font-family: 'Poppins', sans-serif;
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    height: -webkit-fill-available;
   }
+  
+  body {
+    @apply bg-background text-foreground font-sans min-h-screen;
+    font-family: 'Inter', sans-serif;
+    min-height: -webkit-fill-available;
+  }
+  
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sen', sans-serif;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  /* Improved focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Better button touch targets on mobile */
+  button, .button, a {
+    @apply touch-manipulation;
   }
 }
 
 @layer utilities {
   .ghibli-gradient {
-    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
+    @apply bg-gradient-to-r from-primary/90 to-secondary/90 backdrop-blur-sm;
+  }
+  
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20;
   }
   
   .ghibli-card {
@@ -93,6 +116,15 @@
 
   .animate-float {
     animation: float 6s ease-in-out infinite;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
   @keyframes float {
@@ -104,6 +136,49 @@
     }
     100% {
       transform: translateY(0px);
+    }
+  }
+  
+  /* Mobile touch optimizations */
+  .touch-area {
+    @apply p-2 -m-2; /* Increases touch area without affecting layout */
+  }
+  
+  /* Improved card design */
+  .card-gradient {
+    @apply bg-gradient-to-br from-card to-secondary/20 backdrop-blur-sm;
+  }
+  
+  /* Responsive paddings */
+  .section-padding {
+    @apply py-8 px-4 md:py-16 md:px-8 lg:py-20 lg:px-0;
+  }
+  
+  /* Animation utilities */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-in-bottom {
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideInBottom 0.5s ease-out forwards;
+  }
+  
+  @keyframes slideInBottom {
+    from { 
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to { 
+      transform: translateY(0);
+      opacity: 1;
     }
   }
 }

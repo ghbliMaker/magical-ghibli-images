@@ -8,40 +8,52 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { User, Settings, Image, CreditCard, LogOut, Crown } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  // In a real app, these would come from Supabase
-  const user = {
-    name: "Chihiro",
-    email: "chihiro@example.com",
-    avatar: "",
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  
+  // This would come from the database in a real app
+  const userProfile = {
+    name: user?.user_metadata?.username || user?.email?.split('@')[0] || "User",
+    email: user?.email || "user@example.com",
+    avatar: user?.user_metadata?.avatar_url || "",
     subscription: "free",
     imagesThisWeek: 7,
     totalImages: 24,
     maxWeeklyImages: 10,
   };
 
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <Layout>
-      <div className="container py-8 md:py-12 max-w-4xl">
+      <div className="container py-8 md:py-12 max-w-4xl px-4">
         <div className="flex flex-col md:flex-row gap-8 md:gap-12">
           {/* Sidebar */}
           <div className="w-full md:w-1/3">
-            <Card>
+            <Card className="border-primary/10 shadow-lg">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="text-lg">{user.name[0]}</AvatarFallback>
+                    <AvatarImage src={userProfile.avatar} alt={userProfile.name} />
+                    <AvatarFallback className="text-lg bg-primary/20 text-primary">
+                      {userProfile.name[0].toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <Button variant="ghost" size="icon">
                     <Settings className="h-4 w-4" />
                   </Button>
                 </div>
-                <CardTitle className="mt-2">{user.name}</CardTitle>
-                <CardDescription>{user.email}</CardDescription>
+                <CardTitle className="mt-2">{userProfile.name}</CardTitle>
+                <CardDescription>{userProfile.email}</CardDescription>
                 <div className="mt-2">
-                  {user.subscription === "premium" ? (
+                  {userProfile.subscription === "premium" ? (
                     <Badge className="bg-accent text-accent-foreground gap-1">
                       <Crown className="h-3 w-3" /> Premium
                     </Badge>
@@ -54,23 +66,27 @@ const Profile = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-1">
                     <span>Weekly Usage</span>
-                    <span className="font-medium">{user.imagesThisWeek}/{user.maxWeeklyImages}</span>
+                    <span className="font-medium">{userProfile.imagesThisWeek}/{userProfile.maxWeeklyImages}</span>
                   </div>
-                  <Progress value={(user.imagesThisWeek / user.maxWeeklyImages) * 100} className="h-2" />
+                  <Progress value={(userProfile.imagesThisWeek / userProfile.maxWeeklyImages) * 100} className="h-2" />
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Creations</span>
-                  <span>{user.totalImages}</span>
+                  <span>{userProfile.totalImages}</span>
                 </div>
               </CardContent>
               <CardFooter className="flex-col space-y-4">
-                {user.subscription === "free" && (
+                {userProfile.subscription === "free" && (
                   <Button className="w-full gap-2">
                     <Crown className="h-4 w-4" />
                     Upgrade to Premium
                   </Button>
                 )}
-                <Button variant="outline" className="w-full gap-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={handleLogout}
+                >
                   <LogOut className="h-4 w-4" />
                   Sign out
                 </Button>
@@ -99,7 +115,7 @@ const Profile = () => {
               <TabsContent value="creations">
                 <h2 className="font-display text-xl font-bold mb-4">Recent Creations</h2>
                 
-                {user.totalImages > 0 ? (
+                {userProfile.totalImages > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {Array.from({ length: 4 }, (_, i) => (
                       <div key={i} className="aspect-square rounded-lg bg-muted overflow-hidden">
@@ -117,7 +133,7 @@ const Profile = () => {
                       <Image className="h-10 w-10 text-muted-foreground mb-4" />
                       <h3 className="font-medium mb-1">No creations yet</h3>
                       <p className="text-sm text-muted-foreground mb-4">Start creating magical images</p>
-                      <Button>Create Your First Image</Button>
+                      <Button onClick={() => navigate("/generator")}>Create Your First Image</Button>
                     </CardContent>
                   </Card>
                 )}
@@ -138,7 +154,7 @@ const Profile = () => {
                 <h2 className="font-display text-xl font-bold mb-4">Subscription Management</h2>
                 <Card>
                   <CardContent className="pt-6">
-                    {user.subscription === "premium" ? (
+                    {userProfile.subscription === "premium" ? (
                       <div>
                         <div className="flex items-center gap-2 mb-2">
                           <Badge className="bg-accent text-accent-foreground gap-1">
