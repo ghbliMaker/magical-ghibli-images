@@ -22,6 +22,15 @@ export interface GenerationResult {
   createdAt: Date;
 }
 
+// Interface for gallery items
+export interface GalleryItem {
+  id: string;
+  imageUrl: string;
+  prompt: string;
+  createdAt: Date;
+  magicLevel?: number;
+}
+
 /**
  * Service for handling image generation with OpenAI
  */
@@ -119,7 +128,7 @@ export const imageGenerationService = {
   /**
    * Get all images from the user's gallery
    */
-  getUserGallery: async (userId: string) => {
+  getUserGallery: async (userId: string): Promise<GalleryItem[]> => {
     try {
       const { data, error } = await supabase
         .from('generated_images')

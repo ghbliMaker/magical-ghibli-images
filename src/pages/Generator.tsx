@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import AnimatedButton from "@/components/AnimatedButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +15,6 @@ import {
   DownloadCloud, 
   Share2, 
   Loader2, 
-  ImageIcon,
   RefreshCw,
   Info,
   Check,
@@ -26,9 +26,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { imageGenerationService, GenerationResult } from "@/services/imageGeneration";
 import { motion } from "framer-motion";
+import ImagePreview from "@/components/ImagePreview";
 
 const Generator = () => {
   const { toast } = useToast();
@@ -335,12 +335,10 @@ const Generator = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <Button 
+                <AnimatedButton 
                   onClick={generateImage} 
                   disabled={isGenerating || !prompt.trim() || remainingCredits <= 0} 
                   className="w-full gap-2 bg-accent hover:bg-accent/80 text-accent-foreground transition-all duration-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   {isGenerating ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -348,7 +346,7 @@ const Generator = () => {
                     <Wand2 className="h-4 w-4" />
                   )}
                   {isGenerating ? "Generating..." : "Generate Image"}
-                </Button>
+                </AnimatedButton>
               </motion.div>
             </TabsContent>
             
@@ -427,7 +425,7 @@ const Generator = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                <Button 
+                <AnimatedButton 
                   onClick={handleImageUploadGenerate} 
                   disabled={isGenerating || !selectedFile || remainingCredits <= 0} 
                   className="w-full gap-2 bg-accent hover:bg-accent/80 text-accent-foreground transition-all duration-300"
@@ -438,7 +436,7 @@ const Generator = () => {
                     <Wand2 className="h-4 w-4" />
                   )}
                   {isGenerating ? "Transforming..." : "Transform to Ghibli Style"}
-                </Button>
+                </AnimatedButton>
               </motion.div>
             </TabsContent>
           </Tabs>
@@ -453,39 +451,7 @@ const Generator = () => {
               Your Creation
             </motion.h2>
             
-            <motion.div 
-              className="bg-muted/30 rounded-lg overflow-hidden aspect-square relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              {generatedImage ? (
-                <img 
-                  src={generatedImage.imageUrl} 
-                  alt="Generated" 
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full gap-4 p-6 text-center">
-                  <div className="rounded-full bg-muted/50 p-6">
-                    <ImageIcon className="h-8 w-8 text-muted-foreground" />
-                  </div>
-                  {isGenerating ? (
-                    <div className="space-y-2">
-                      <Loader2 className="h-8 w-8 text-primary animate-spin mx-auto" />
-                      <p className="text-muted-foreground">Creating your masterpiece...</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <p className="font-medium">No image generated yet</p>
-                      <p className="text-muted-foreground text-sm">
-                        Your Ghibli-style creation will appear here
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </motion.div>
+            <ImagePreview generatedImage={generatedImage} isGenerating={isGenerating} />
             
             {generatedImage && (
               <motion.div 
