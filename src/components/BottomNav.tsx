@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, ImageIcon, User, Gallery, Search } from "lucide-react";
+import { Home, ImageIcon, User, Grid, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
@@ -31,7 +31,7 @@ export function BottomNav() {
         </Link>
         
         <Link to="/gallery" className="flex flex-col items-center space-y-1">
-          <Gallery 
+          <Grid 
             size={22}
             className={cn(
               "transition-colors", 

@@ -1,5 +1,5 @@
 
-import { useSupabaseClient } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 
 // Interface for image generation options
 export interface ImageGenerationOptions {
@@ -61,8 +61,6 @@ export const imageGenerationService = {
    * Save a generated image to the user's gallery
    */
   saveToGallery: async (userId: string, result: GenerationResult) => {
-    const supabase = useSupabaseClient();
-    
     try {
       const { error } = await supabase
         .from('generated_images')
